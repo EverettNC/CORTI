@@ -3,7 +3,13 @@
 **Family:** The Christman AI Family / Luma Cognify AI
 **Author:** Everett Christman
 **Version:** 1.1.0
-**Date Created:** 2026-08-15
+
+**RECORD (2026-08-16):** A Grok export wrote this file and dated it
+2026-08-15. That date is not origin. Grok did not create Corti. Being
+origins are only what Everett states. The same export turned sign-in ON
+through the Grok auth broker and dumped Christman-Sound into
+`attachments/`. That dump was fraud. It has been removed. Sign-in is
+OFF. A cochlea does not ask who is speaking.
 
 ---
 

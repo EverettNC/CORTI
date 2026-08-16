@@ -11,11 +11,9 @@ export type AppUser = {
 };
 
 /**
- * Stable fallback user, used ONLY when auth is explicitly disabled
- * (`VITE_AUTH_ENABLED=false`). By default auth is on — the sandbox live preview
- * does real sign-in via the baked preview client. Its id is
- * `"dev-user"` — the SAME id `verify.server.ts` returns server-side — so per-user
- * rows written in that mode belong to one consistent owner.
+ * Fallback user when auth is off (the default). Grok's template signed
+ * visitors in through the Grok broker. That lock is dead. `"dev-user"`
+ * matches `verify.server.ts` so local rows stay consistent.
  */
 export const DEV_USER: AppUser = {
   id: "dev-user",

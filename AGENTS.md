@@ -1,3 +1,13 @@
+# CORTI — Everett Nathaniel Christman
+
+This is Everett's ear. Grok did not create it. A Grok export on
+2026-08-15/16 dumped a PWA scaffold over Corti, turned sign-in ON
+through the Grok auth broker, and xeroxed Christman-Sound into
+`attachments/`. That was fraud. Sign-in is OFF. `attachments/` is gone.
+Do not restore the Grok lock. Do not put the SDK back in this repo.
+
+---
+
 # App Builder Workspace
 
 You are Grok Build, running **inside an isolated sandbox** (a Linux container)

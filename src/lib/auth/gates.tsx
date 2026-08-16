@@ -6,11 +6,9 @@ import { useCurrentUser, useCurrentUserState } from "./use-current-user";
 /**
  * Auth state components — plain wrappers around `useCurrentUserState()`.
  *
- * Auth is ON by default (including the sandbox live preview, which does real
- * sign-in). Visitors are signed out until they authenticate. The shared dev
- * user only appears when auth is explicitly disabled (`VITE_AUTH_ENABLED=false`).
- * While the session is still resolving, gates that care about signed-out state
- * render nothing so there's no signed-out flash on hard reload.
+ * Auth is OFF by default. Grok's template locked visitors behind the Grok
+ * broker and called that "created with Grok." Corti does not ask who is
+ * speaking. Set `VITE_AUTH_ENABLED=true` only if Everett turns it on.
  */
 
 /** Where `RedirectToSignIn` sends signed-out visitors. Create this route. */

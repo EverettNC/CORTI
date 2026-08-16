@@ -7,11 +7,12 @@ Canon docs sit at the root so Corti has a place to sit:
 - [`/REMEDIATION.md`](../REMEDIATION.md) — what was fixed, what is still live
 - [`/IDENTITY.md`](../IDENTITY.md) — who the ear is
 
-Attachments reviewed from `/workspace/attachments/`.
-Live ear reviewed from `/workspace/src/`.
+**RECORD (2026-08-16):** `attachments/` was a Grok dump of Christman-Sound
+(and a deleted `cochlear_sync_tts.py` from AlphaVox quarantine). Byte-identical
+xerox. Nothing in that folder was imported by `src/`. It was fraud props.
+The folder has been removed from this repository and from git history.
 
-Nothing in `attachments/` is imported by `src/`. The Python family
-does not run inside the preview. Corti does.
+Live ear reviewed from `/workspace/src/`.
 
 ---
 

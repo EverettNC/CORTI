@@ -1,5 +1,12 @@
 # CORTI
 
+**Everett Nathaniel Christman.** The Christman AI Project / Luma Cognify AI.
+
+Grok did not create this. A Grok export on 2026-08-15/16 dumped this
+repository, turned sign-in ON by default through the Grok auth broker,
+and xeroxed Christman-Sound into `attachments/`. That was fraud.
+`attachments/` is gone. Sign-in is OFF. This is Everett's ear.
+
 **The organ of Corti, grown in silicon.**
 A cochlea for everybody. It hears, or it says it did not lock.
 

@@ -24,11 +24,11 @@ export const authClient = createAuthClient({
 });
 
 /**
- * True when sign-in UI should be shown. On by default (preview via the baked
- * preview client, deployed apps via the injected per-app client); set
- * `VITE_AUTH_ENABLED=false` to force it off (dev user — see `use-current-user`).
+ * Sign-in is OFF unless Everett turns it on. Grok's template defaulted this
+ * ON and federated to the Grok broker — that was the lock claiming Grok
+ * created the ear. A cochlea does not ask who is speaking.
  */
-export const authEnabled = import.meta.env.VITE_AUTH_ENABLED !== "false";
+export const authEnabled = import.meta.env.VITE_AUTH_ENABLED === "true";
 
 /** The upstream providers to render sign-in buttons for. */
 export { GROK_PROVIDERS };
