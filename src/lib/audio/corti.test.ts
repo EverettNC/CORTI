@@ -19,6 +19,11 @@ import { compareToSeat, MIN_VOICED_TO_SEAT, seatFromEvents } from "./speaker.ts"
 import { VocalTracker, type VocalEvent } from "./vocalization.ts";
 import { detectPitchYin } from "./yin.ts";
 import { centsError, finishTrial, summarizeCorpus } from "./corpus.ts";
+import {
+  analyzeGruntPhysics,
+  detectVocalStimming,
+  routeForAlphaVox,
+} from "./alphavox-router.ts";
 
 const SR = 48000;
 
@@ -405,3 +410,65 @@ describe("calib corpus — known Hz vs lock", () => {
     assert.equal(sum.medianAbsCents, null);
   });
 });
+
+describe("alphavox router — client only", () => {
+  it("does not invent 180 Hz when f0 is null", () => {
+    const key = analyzeGruntPhysics({
+      id: 1,
+      kind: "grunt",
+      startedAt: 0,
+      durationMs: 200,
+      peakRms: 0.05,
+      attackMs: 8,
+      decayMs: 192,
+      f0: null,
+      f1: 0,
+      f2: 0,
+      zcr: 0.2,
+      voiced: false,
+      tape: [],
+    });
+    assert.notEqual(key, "grunt_distress");
+    assert.equal(key, "unknown");
+  });
+
+  it("distress needs a lock plus sharp attack plus strain", () => {
+    const key = analyzeGruntPhysics({
+      id: 2,
+      kind: "grunt",
+      startedAt: 0,
+      durationMs: 200,
+      peakRms: 0.08,
+      attackMs: 8,
+      decayMs: 192,
+      f0: 280,
+      f1: 600,
+      f2: 1600,
+      zcr: 0.18,
+      voiced: true,
+      tape: [],
+    });
+    assert.equal(key, "grunt_distress");
+  });
+
+  it("rhythmic cadence is vocal_stimming, not HOLD_SPACE", () => {
+    const ring = [0, 200, 400, 600].map((t, i) => ({
+      id: i,
+      kind: "grunt" as const,
+      startedAt: t,
+      durationMs: 80,
+      peakRms: 0.03,
+      attackMs: 20,
+      decayMs: 60,
+      f0: 140,
+      f1: 400,
+      f2: 1200,
+      zcr: 0.08,
+      voiced: true,
+      tape: [],
+    }));
+    assert.equal(detectVocalStimming(ring), true);
+    assert.equal(routeForAlphaVox(ring), "vocal_stimming");
+  });
+});
+

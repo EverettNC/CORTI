@@ -31,6 +31,11 @@ import {
   type VsSeat,
 } from "@/lib/audio/speaker";
 import { VocalTracker, type VocalEvent } from "@/lib/audio/vocalization";
+import {
+  routeForAlphaVox,
+  type AcousticKey,
+} from "@/lib/audio/alphavox-router";
+import { postAcousticKey } from "@/lib/audio/alphavox-live";
 
 export type MicState = "off" | "pending" | "on" | "denied";
 export type Mode = "listen" | "tone" | "train";
@@ -49,6 +54,7 @@ type HearingApi = {
   held: number[];
   last: LiveFrame | null;
   events: VocalEvent[];
+  lastAcousticKey: AcousticKey;
   lastVs: VsSeat | null;
   seat: SpeakerSeat | null;
   voicedForSeat: number;
@@ -103,6 +109,7 @@ export function HearingProvider({ children }: { children: ReactNode }) {
   const [held, setHeld] = useState<number[]>([]);
   const [last, setLast] = useState<LiveFrame | null>(null);
   const [events, setEvents] = useState<VocalEvent[]>([]);
+  const [lastAcousticKey, setLastAcousticKey] = useState<AcousticKey>("unknown");
   const [seat, setSeat] = useState<SpeakerSeat | null>(null);
   const seatRef = useRef<SpeakerSeat | null>(null);
   const [lastVs, setLastVs] = useState<VsSeat | null>(null);
@@ -199,7 +206,11 @@ export function HearingProvider({ children }: { children: ReactNode }) {
         setRestRms(s[Math.floor(s.length / 2)] ?? 0);
       }
       if (closed) {
-        setEvents([...tracker.current.events]);
+        const ring = [...tracker.current.events];
+        setEvents(ring);
+        const key = routeForAlphaVox(ring);
+        setLastAcousticKey(key);
+        postAcousticKey(key);
         setLastVs(compareToSeat(closed, seatRef.current));
       }
     }
@@ -393,6 +404,7 @@ export function HearingProvider({ children }: { children: ReactNode }) {
         held,
         last,
         events,
+        lastAcousticKey,
         lastVs,
         seat,
         voicedForSeat: events.filter((e) => e.voiced && e.f0 != null).length,
