@@ -9,7 +9,18 @@ import {
 } from "react";
 import { HearingEngine, type HearingFrame, type Waveform } from "@/lib/audio/engine";
 import { inspectMic } from "@/lib/audio/mic";
+import { midiToFreq } from "@/lib/audio/notes";
 import { measureProxies, type SpectralProxies } from "@/lib/audio/proxies";
+import {
+  appendSample,
+  clearCorpusStore,
+  finishTrial,
+  loadCorpus,
+  saveCorpus,
+  summarizeCorpus,
+  type CalibSample,
+  type CorpusSummary,
+} from "@/lib/audio/corpus";
 import {
   clearSeat,
   compareToSeat,
@@ -59,6 +70,20 @@ type HearingApi = {
   releaseMidi: (midi: number) => void;
   releaseAll: () => void;
   subscribe: (fn: (f: LiveFrame) => void) => () => void;
+  corpus: CalibSample[];
+  corpusSummary: CorpusSummary;
+  clearCorpus: () => void;
+};
+
+type OpenTrial = {
+  midi: number;
+  expectedHz: number;
+  until: number | null;
+  locks: number[];
+  peakRms: number;
+  waveform: Waveform;
+  a4: number;
+  source: Mode;
 };
 
 const HearingContext = createContext<HearingApi | null>(null);
@@ -88,12 +113,40 @@ export function HearingProvider({ children }: { children: ReactNode }) {
   const [framed, setFramed] = useState(false);
   const [blind, setBlind] = useState(false);
   const lastUi = useRef(0);
+  const modeRef = useRef<Mode>("listen");
+  const a4Ref = useRef(440);
+  const waveRef = useRef<Waveform>("sine");
+  const trials = useRef(new Map<number, OpenTrial>());
+  const [corpus, setCorpus] = useState<CalibSample[]>([]);
+
+  const flushTrial = useCallback((midi: number) => {
+    const open = trials.current.get(midi);
+    if (!open) return;
+    trials.current.delete(midi);
+    const sample = finishTrial(open);
+    setCorpus((prev) => {
+      const next = appendSample(prev, sample);
+      saveCorpus(next);
+      return next;
+    });
+  }, []);
+
+  useEffect(() => {
+    modeRef.current = mode;
+  }, [mode]);
+  useEffect(() => {
+    a4Ref.current = a4;
+  }, [a4]);
+  useEffect(() => {
+    waveRef.current = waveform;
+  }, [waveform]);
 
   useEffect(() => {
     setFramed(inspectMic().framed);
     const loaded = loadSeat();
     setSeat(loaded);
     seatRef.current = loaded;
+    setCorpus(loadCorpus());
   }, []);
 
   const loop = useCallback(() => {
@@ -113,6 +166,15 @@ export function HearingProvider({ children }: { children: ReactNode }) {
     };
     const f0 =
       frame.pitch && frame.pitch.probability > 0.62 ? frame.pitch.freq : null;
+    if (trials.current.size > 0) {
+      const due: number[] = [];
+      trials.current.forEach((trial, midi) => {
+        if (f0 != null) trial.locks.push(f0);
+        if (frame.rms > trial.peakRms) trial.peakRms = frame.rms;
+        if (trial.until != null && frame.time >= trial.until) due.push(midi);
+      });
+      due.forEach((midi) => flushTrial(midi));
+    }
     const closed = tracker.current.step(
       frame.time,
       frame.rms,
@@ -142,7 +204,7 @@ export function HearingProvider({ children }: { children: ReactNode }) {
       }
     }
     raf.current = requestAnimationFrame(loop);
-  }, []);
+  }, [flushTrial]);
 
   const open = useCallback(async () => {
     if (engine.current || opening) return;
@@ -208,17 +270,34 @@ export function HearingProvider({ children }: { children: ReactNode }) {
       const e = engine.current;
       if (!e) return;
       e.playMidi(midi, { id: `key-${midi}`, ...opts });
+      const expectedHz = midiToFreq(midi + (opts?.cents ?? 0) / 100, a4Ref.current);
+      if (trials.current.has(midi)) flushTrial(midi);
+      trials.current.set(midi, {
+        midi,
+        expectedHz,
+        until:
+          opts?.duration != null ? performance.now() + opts.duration * 1000 : null,
+        locks: [],
+        peakRms: 0,
+        waveform: waveRef.current,
+        a4: a4Ref.current,
+        source: modeRef.current,
+      });
       if (opts?.duration == null) {
         setHeld((h) => (h.includes(midi) ? h : [...h, midi]));
       }
     },
-    [],
+    [flushTrial],
   );
 
-  const releaseMidi = useCallback((midi: number) => {
-    engine.current?.release(`key-${midi}`);
-    setHeld((h) => h.filter((m) => m !== midi));
-  }, []);
+  const releaseMidi = useCallback(
+    (midi: number) => {
+      engine.current?.release(`key-${midi}`);
+      flushTrial(midi);
+      setHeld((h) => h.filter((m) => m !== midi));
+    },
+    [flushTrial],
+  );
 
   const releaseAll = useCallback(() => {
     engine.current?.releaseAll();
@@ -241,6 +320,11 @@ export function HearingProvider({ children }: { children: ReactNode }) {
     seatRef.current = null;
     setSeat(null);
     setLastVs(null);
+  }, []);
+
+  const clearCorpus = useCallback(() => {
+    clearCorpusStore();
+    setCorpus([]);
   }, []);
 
   const subscribe = useCallback((fn: (f: LiveFrame) => void) => {
@@ -330,6 +414,9 @@ export function HearingProvider({ children }: { children: ReactNode }) {
         releaseMidi,
         releaseAll,
         subscribe,
+        corpus,
+        corpusSummary: summarizeCorpus(corpus),
+        clearCorpus,
       }}
     >
       {children}

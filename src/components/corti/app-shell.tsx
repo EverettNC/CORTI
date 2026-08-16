@@ -144,9 +144,10 @@ export function AppShell() {
 
         <footer className="border-t border-border pt-5 pb-2 text-xs leading-relaxed text-subtle">
           Corti is the silicon cochlea of The Christman AI Project. Sister to
-          OpenSmell. It feeds CHRISTMAN_EAR_CANAL. christman_dsp.c runs here —
-          RMS, ZCR, YIN, LPC. It will not name a pitch it did not lock, and it
-          will not wear a percentage it did not measure.
+          OpenSmell. christman_dsp.c runs here — RMS, ZCR, YIN, LPC. It will
+          not name a pitch it did not lock, and it will not wear a percentage
+          it did not measure. The canal feed is not wired. The tape stays
+          here until it is.
         </footer>
       </main>
 

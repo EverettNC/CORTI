@@ -72,6 +72,7 @@ export function TonePanel() {
     setVolume,
     seatVoice,
     clearVoice,
+    corpusSummary,
   } = useHearing();
   const p = last?.proxies;
   const live = last && last.rms > 0.008;
@@ -252,6 +253,9 @@ export function TonePanel() {
         </div>
         <p className="mt-2 font-mono text-[0.625rem] tabular-nums text-subtle">
           room rest {restRms > 0 ? restRms.toFixed(4) : "—"}
+          {corpusSummary.n > 0
+            ? ` · ear log ${corpusSummary.locked}/${corpusSummary.n}`
+            : ""}
         </p>
       </div>
 

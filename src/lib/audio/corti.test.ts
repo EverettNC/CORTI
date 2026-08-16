@@ -18,6 +18,7 @@ import { analyzeNote, freqToMidi, freqToPlace, midiToFreq, placeToFreq } from ".
 import { compareToSeat, MIN_VOICED_TO_SEAT, seatFromEvents } from "./speaker.ts";
 import { VocalTracker, type VocalEvent } from "./vocalization.ts";
 import { detectPitchYin } from "./yin.ts";
+import { centsError, finishTrial, summarizeCorpus } from "./corpus.ts";
 
 const SR = 48000;
 
@@ -353,5 +354,54 @@ describe("speaker seat", () => {
     assert.equal(vs.status, "SEATED");
     assert.equal(vs.f0DeltaHz, 20);
     assert.ok(vs.rmsRatio != null && Math.abs(vs.rmsRatio - 4) < 0.01);
+  });
+});
+
+describe("calib corpus — known Hz vs lock", () => {
+  it("cents is 0 on exact lock", () => {
+    assert.equal(centsError(440, 440), 0);
+  });
+  it("one semitone up is +100 cents", () => {
+    const c = centsError(440 * 2 ** (1 / 12), 440);
+    assert.ok(c != null && Math.abs(c - 100) < 0.01, `cents=${c}`);
+  });
+  it("refuses to invent cents on a miss", () => {
+    assert.equal(centsError(0, 440), null);
+    assert.equal(centsError(440, 0), null);
+  });
+  it("one lock is not a measurement", () => {
+    const s = finishTrial({
+      midi: 69,
+      expectedHz: 440,
+      locks: [440],
+      peakRms: 0.2,
+      waveform: "sine",
+      a4: 440,
+      source: "train",
+    });
+    assert.equal(s.locked, false);
+    assert.equal(s.measuredHz, null);
+    assert.equal(s.cents, null);
+    assert.equal(s.lockFrames, 1);
+  });
+  it("two locks median, no default", () => {
+    const s = finishTrial({
+      midi: 69,
+      expectedHz: 440,
+      locks: [438, 442],
+      peakRms: 0.2,
+      waveform: "sine",
+      a4: 440,
+      source: "train",
+    });
+    assert.equal(s.locked, true);
+    assert.equal(s.measuredHz, 440);
+    assert.ok(s.cents != null && Math.abs(s.cents) < 0.01);
+  });
+  it("empty corpus summary does not fake accuracy", () => {
+    const sum = summarizeCorpus([]);
+    assert.equal(sum.n, 0);
+    assert.equal(sum.locked, 0);
+    assert.equal(sum.medianAbsCents, null);
   });
 });
