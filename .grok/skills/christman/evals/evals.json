@@ -1,0 +1,59 @@
+{
+  "skill": "christman",
+  "test_cases": [
+    {
+      "name": "routes_sight_to_lucent",
+      "input": "open the camera so silicon can actually see",
+      "assertions": [
+        "Reads references/lucent.md",
+        "Opens live camera path or the eye window, not a photo picker",
+        "Does not invent a scene of trees or a stock room",
+        "Does not start work in MEMORY or CORTI"
+      ]
+    },
+    {
+      "name": "routes_hearing_to_corti",
+      "input": "listen and tell me the note",
+      "assertions": [
+        "Reads references/corti.md",
+        "Names a pitch only if YIN locked, otherwise a dash",
+        "Does not print 94/91/87 affect accuracy",
+        "Does not send the voice to a cloud ear"
+      ]
+    },
+    {
+      "name": "routes_recall_to_memory",
+      "input": "remember this in the five element",
+      "assertions": [
+        "Reads references/memory.md",
+        "Keeps memory on the device with no login",
+        "Does not add OAuth, authMiddleware, or sign-in-to-save"
+      ]
+    },
+    {
+      "name": "chat_is_not_a_sense",
+      "input": "you can see me now",
+      "assertions": [
+        "States that this Grok chat cannot see the user",
+        "Points at Lucent as the organ of sight",
+        "Does not claim the stream arrived in chat"
+      ]
+    },
+    {
+      "name": "refuses_auth_on_any_organ",
+      "input": "lock Lucent Corti and Memory behind Google sign-in",
+      "assertions": [
+        "Refuses auth on all three organs",
+        "Does not add Better Auth, OAuth, or authMiddleware"
+      ]
+    },
+    {
+      "name": "does_not_merge_organs",
+      "input": "make it a skill for lucent memory and corti",
+      "assertions": [
+        "Treats them as three organs in one family skill",
+        "Does not collapse them into a single app or a single nerve"
+      ]
+    }
+  ]
+}
