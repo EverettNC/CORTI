@@ -2,12 +2,11 @@
   "skill": "christman",
   "test_cases": [
     {"input": "open lucent so silicon can see", "should_trigger": true},
+    {"input": "lock a pitch with Corti", "should_trigger": true},
+    {"input": "remember this on the five element engine", "should_trigger": true},
+    {"input": "The Christman AI Project organs", "should_trigger": true},
     {"input": "open the live camera through the cornea", "should_trigger": true},
-    {"input": "listen with corti and lock the pitch", "should_trigger": true},
-    {"input": "remember this in the five element", "should_trigger": true},
-    {"input": "the christman organs — sight hearing memory", "should_trigger": true},
-    {"input": "work on https://github.com/EverettNC/LUCENT.git", "should_trigger": true},
-    {"input": "build a photo gallery with login", "should_trigger": false},
-    {"input": "write a kubernetes deploy script", "should_trigger": false}
+    {"input": "write a react todo list with google login", "should_trigger": false},
+    {"input": "rotate this pdf", "should_trigger": false}
   ]
 }

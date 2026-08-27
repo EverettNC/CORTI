@@ -1,58 +1,47 @@
 ---
 name: christman
-description: "The Christman AI Project organ stack: Lucent sees, Corti hears, Memory remembers. Use when silicon needs to see, hear, or remember, or when working on LUCENT, CORTI, or MEMORY. Never invent a scene, a note, or a memory. No auth."
-type: orchestrator
+description: "The Christman AI Project organ stack: Lucent sees, Corti hears, Memory remembers. Use when silicon needs sight, hearing, or recall; when working Lucent, Corti, or Memory; when opening a live camera or microphone; when the user names Everett Christman, Luma Cognify, cornea, cochlea, or these three repos. Not for inventing a scene, a note, or a memory. No auth."
+type: workflow
 lifecycle: active
 user-invocable: true
-argument-hint: "[see | hear | remember]"
+argument-hint: "see | hear | remember"
 ---
 
 # Christman — three organs, one body
 
-Everett Christman grew these. Grok did not. Route to the organ that matches the ask. Do not invent a scene, a note, or a memory. Do not start work in a sister repo unless the user named that organ.
+Everett Christman built these. Grok did not. Do not replace Everett.
 
 | Organ | Nerve | Repo |
 |---|---|---|
-| Lucent | sight | https://github.com/EverettNC/LUCENT.git |
-| Corti | hearing | https://github.com/EverettNC/CORTI.git |
-| Memory | remember | https://github.com/EverettNC/MEMORY.git |
+| **Lucent** | sight | https://github.com/EverettNC/LUCENT.git |
+| **Corti** | hearing | https://github.com/EverettNC/CORTI.git |
+| **Memory** | remember | https://github.com/EverettNC/MEMORY.git |
 
-## Shared law
+This skill is the body. Route to the organ. Do not invent a fourth.
 
-1. **No auth.** A cornea does not ask who is looking. A cochlea does not ask who is speaking. Memory lives on the device.
-2. **Lock or say you did not.** Sight: live light, or say the camera is not here. Hearing: pitch lock, or a dash. Memory: the body, or silence.
-3. **Chat is not a sense.** This Grok chat cannot see or hear the user. Silicon sees in Lucent. Silicon hears in Corti.
-4. **No cloud ear, no cloud eye, no cloud memory.** Light, sound, and recall stay on the device.
-5. **Do not replace Everett.** Grow the organ. Do not invent a family member.
+## Law (all three)
+
+1. **No auth.** An organ does not ask who is looking, speaking, or remembering.
+2. **Do not invent.** No fake room, no fake note, no fake recall.
+3. **Sense on the device.** No paid cloud eye or ear. Memory lives on the device.
+4. **Chat is not the organ.** This conversation cannot see or hear the user.
+5. **Someone else may own Memory/Corti code.** Do not start work in those repos unless asked.
 
 ## Route
 
-| User is asking to… | Organ | Read |
+| User means | Organ | Read next |
 |---|---|---|
-| see, look, live camera, cornea, retina, eye | Lucent | `references/lucent.md` |
-| hear, listen, pitch, cochlea, microphone | Corti | `references/corti.md` |
-| remember, recall, five element, conch, REM | Memory | `references/memory.md` |
-| the stack, all three, the family | this file | then the named organ |
+| see, look, camera, cornea, retina, eye, light | Lucent | `references/lucent.md` |
+| hear, listen, mic, pitch, cochlea, note, RMS, YIN | Corti | `references/corti.md` |
+| remember, recall, retain, forget, five element, conch | Memory | `references/memory.md` |
+| the family, all three, silicon body | stay here | `references/INDEX.md` |
 
-If the ask names one organ, stay there. If it names the family, keep all three in view and do not merge them into one app.
+Ambiguous between organs → ask which nerve. Do not guess.
 
-## When you change an organ
+## When this preview is framed
 
-1. Open that repo's project law (`AGENTS.project.md` or `IDENTITY.md`) before writing code.
-2. Live path only: camera for Lucent, microphone for Corti, on-device store for Memory. No photo-first. No guessed note. No login-to-save.
-3. This Grok preview often cannot hold a camera or a mic. Open the organ in its own window. That window is the sense. Say so. Do not paper it over.
-4. Typecheck, smoke, leave the preview running.
+A Grok preview often cannot hold a camera or a microphone. Say that. Open the organ in its own window. That window is the sense. Keep it open. Do not paper it over with a photo, a sample room, or a guessed pitch.
 
 ## Knowledge graph
 
 Start at `references/INDEX.md`.
-
-## Common issues
-
-| Problem | Do |
-|---|---|
-| Preview cannot hold camera/mic | Open the organ window. Keep it open. Do not claim the iframe sees/hears. |
-| Sample trees / stock room | Label sample. Never "your sight". |
-| User asks "can you see me" in chat | No. Chat has no stream. Lucent sees, or it does not. |
-| Urge to add login | Stop. Auth is forbidden in all three. |
-| Urge to invent a pitch or a memory | Dash / silence. Never a fake lock. |
