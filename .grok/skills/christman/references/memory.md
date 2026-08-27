@@ -1,5 +1,5 @@
 ---
-description: "Memory — five element. Read when silicon must remember, or when editing MEMORY."
+description: "Memory — Five Element remember. Read when silicon must retain or recall."
 connections: [lucent, corti]
 ---
 
@@ -7,17 +7,11 @@ connections: [lucent, corti]
 
 Repo: https://github.com/EverettNC/MEMORY.git
 
-Silicon implementation of Everett Christman's coined memory architecture. Project law: MEMORY `AGENTS.project.md`.
+Silicon implementation of Everett Christman's coined memory architecture. Memory lives on the device.
 
 Sister to [[lucent]] and [[corti]].
 
-## Law
-
-- Auth is forbidden. No OAuth, Better Auth, login, session, account, user_id, Google, X sign-in, broker, authMiddleware, requireUserId, or "sign in to save".
-- Memory lives on the device. That is the design.
-- Grok App Builder scaffolded an auth stack. It was not Everett's idea. Do not put it back.
-
-## Architecture (do not invent another)
+## Architecture (do not flatten)
 
 - Five channels: sight, sound, smell, body, place. Place is the building.
 - Four jobs, not a dial: throwaway, compress, hold, REM.
@@ -28,4 +22,10 @@ Sister to [[lucent]] and [[corti]].
 - Conch: position is retrieval.
 - Reclaim takes the charge. The room stays.
 
-Write to that. Nothing else.
+Engine code lives under `engine/`. Write to that. Nothing else.
+
+## Never
+
+- Put auth back. No sign-in to save.
+- Invent a recall the engine did not keep
+- Treat the index as the memory

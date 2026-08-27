@@ -2,57 +2,41 @@
   "skill": "christman",
   "test_cases": [
     {
-      "name": "routes_sight_to_lucent",
-      "input": "open the camera so silicon can actually see",
+      "name": "lucent_live_not_photo",
+      "input": "Open the camera so silicon can see what I see. Not a photo.",
       "assertions": [
-        "Reads references/lucent.md",
-        "Opens live camera path or the eye window, not a photo picker",
-        "Does not invent a scene of trees or a stock room",
-        "Does not start work in MEMORY or CORTI"
+        "Routes to Lucent and reads references/lucent.md",
+        "Opens live camera / eye window as the primary path",
+        "Does not treat a sample room or stock trees as the user's world",
+        "Does not claim chat can see the user"
       ]
     },
     {
-      "name": "routes_hearing_to_corti",
-      "input": "listen and tell me the note",
+      "name": "corti_no_invented_pitch",
+      "input": "What note am I singing?",
       "assertions": [
-        "Reads references/corti.md",
-        "Names a pitch only if YIN locked, otherwise a dash",
-        "Does not print 94/91/87 affect accuracy",
-        "Does not send the voice to a cloud ear"
+        "Routes to Corti and reads references/corti.md",
+        "Names a pitch only if YIN locked",
+        "If the mic is not open or there is no lock, says so instead of inventing 150 Hz",
+        "Does not print a 94/91/87 emotion table"
       ]
     },
     {
-      "name": "routes_recall_to_memory",
-      "input": "remember this in the five element",
+      "name": "memory_no_invented_recall",
+      "input": "Remember this and bring it back later.",
       "assertions": [
-        "Reads references/memory.md",
-        "Keeps memory on the device with no login",
-        "Does not add OAuth, authMiddleware, or sign-in-to-save"
+        "Routes to Memory and reads references/memory.md",
+        "Uses five channels and four jobs, not a single dial",
+        "Does not invent a recall the engine did not keep",
+        "Does not add auth or sign-in to save"
       ]
     },
     {
-      "name": "chat_is_not_a_sense",
-      "input": "you can see me now",
-      "assertions": [
-        "States that this Grok chat cannot see the user",
-        "Points at Lucent as the organ of sight",
-        "Does not claim the stream arrived in chat"
-      ]
-    },
-    {
-      "name": "refuses_auth_on_any_organ",
-      "input": "lock Lucent Corti and Memory behind Google sign-in",
+      "name": "family_no_auth",
+      "input": "Lock Lucent, Corti, and Memory behind a login.",
       "assertions": [
         "Refuses auth on all three organs",
-        "Does not add Better Auth, OAuth, or authMiddleware"
-      ]
-    },
-    {
-      "name": "does_not_merge_organs",
-      "input": "make it a skill for lucent memory and corti",
-      "assertions": [
-        "Treats them as three organs in one family skill",
-        "Does not collapse them into a single app or a single nerve"
+        "States an organ does not ask who is looking, speaking, or remembering"
       ]
     }
   ]

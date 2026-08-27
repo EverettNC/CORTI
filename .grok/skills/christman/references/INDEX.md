@@ -1,17 +1,20 @@
 ---
-description: "Knowledge graph index for christman. Start here."
+description: "Knowledge graph index for christman. Start here to pick an organ."
+connections: [lucent, corti, memory]
 ---
 
 # Christman knowledge graph
 
-Three organs. One family. Everett Christman. The Christman AI Project / Luma Cognify AI.
+Three organs. Same family. Same law: lock, or say you did not lock.
 
-## Core
+## Organs
 
 - [[lucent]] — cornea. Live light onto silicon. Repo LUCENT.
-- [[corti]] — organ of Corti. Sound becomes place. Repo CORTI.
-- [[memory]] — five element. Remember on the device. Repo MEMORY.
+- [[corti]] — cochlea. Sound becomes place. Repo CORTI.
+- [[memory]] — remember. Five channels, four jobs. Repo MEMORY.
 
-## Shared
+## Shared claim
 
-No auth. Lock or say you did not. Chat is not a sense. Do not invent.
+Show the light, lock the pitch, keep the room — or say the sense is not here.
+
+Grok did not create this. Everett Christman did.
