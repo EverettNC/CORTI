@@ -3,3 +3,96 @@ node_modules/
 .github_repo
 .env
 .env.*
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.log
+.DS_Store
+*.lock
+# build artifacts
+tcap_compute.egg-info/
+
+# lockfiles: uv.lock IS tracked for reproducible installs
+!uv.lock
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Models & Data
+models/*.pt
+models/*.pth
+models/*.ckpt
+models/*.bin
+models/*.safetensors
+!models/.gitkeep
+
+data/raw/*
+data/processed/*
+data/training/*
+data/voicepacks/*
+!data/*/.gitkeep
+
+# Logs & Outputs
+logs/
+*.log
+outputs/
+*.wav
+*.mp3
+*.flac
+
+# Secrets
+.env
+*.key
+secrets/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary
+temp/
+tmp/
+cache/
+.cache/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Config
+config/local_*.yaml
+config/*_secret.yaml
+# Local env + caches
+venv/
+__pycache__/
+*.pyc
+
+# Build / packaging artifacts
+icanhearyou.egg-info/
+
+# Legacy src archive we kept for safety
+_archive_src/
+
+# Generated outputs
+funeral_outputs/
+
+
+# Embedded runtime + generated media (never track)
+python@3.12/
+vega_output/
+

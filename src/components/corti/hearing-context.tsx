@@ -36,6 +36,7 @@ import {
   type AcousticKey,
 } from "@/lib/audio/alphavox-router";
 import { postAcousticKey } from "@/lib/audio/alphavox-live";
+import { earFromFrame, postCortiHouse } from "@/lib/audio/house-record";
 
 export type MicState = "off" | "pending" | "on" | "denied";
 export type Mode = "listen" | "tone" | "train";
@@ -120,6 +121,8 @@ export function HearingProvider({ children }: { children: ReactNode }) {
   const [framed, setFramed] = useState(false);
   const [blind, setBlind] = useState(false);
   const lastUi = useRef(0);
+  const lastHouse = useRef(0);
+  const micRef = useRef<MicState>("off");
   const modeRef = useRef<Mode>("listen");
   const a4Ref = useRef(440);
   const waveRef = useRef<Waveform>("sine");
@@ -138,6 +141,9 @@ export function HearingProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  useEffect(() => {
+    micRef.current = mic;
+  }, [mic]);
   useEffect(() => {
     modeRef.current = mode;
   }, [mode]);
@@ -197,6 +203,17 @@ export function HearingProvider({ children }: { children: ReactNode }) {
     }
     listeners.current.forEach((fn) => fn(frame));
     const now = performance.now();
+    if (now - lastHouse.current > 8000) {
+      lastHouse.current = now;
+      postCortiHouse(
+        earFromFrame({
+          listening: micRef.current === "on",
+          rms: frame.rms,
+          zcr: frame.proxies.zcr,
+          f0,
+        }),
+      );
+    }
     if (now - lastUi.current > 50) {
       lastUi.current = now;
       setLast(frame);

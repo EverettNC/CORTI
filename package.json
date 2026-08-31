@@ -8,12 +8,14 @@
   },
   "scripts": {
     "dev": "vite dev --host 0.0.0.0 --port 8080",
+    "being": "vite dev --host 0.0.0.0 --port 5487 --strictPort",
+    "stream": "vite dev --host 0.0.0.0 --port 8765 --strictPort",
     "build": "vite build && npm run db:migrate",
     "db:migrate": "node scripts/migrate.mjs",
     "build:dev": "vite build --mode development",
     "preview": "vite preview --host 0.0.0.0 --port 8080",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test src/lib/audio/corti.test.ts && node --test scripts/**/*.test.mjs scripts/corti-honesty.test.mjs",
+    "test": "node --experimental-strip-types --test src/lib/audio/corti.test.ts src/lib/audio/house-record.test.ts && node --test scripts/**/*.test.mjs scripts/corti-honesty.test.mjs",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
