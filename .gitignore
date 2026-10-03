@@ -96,3 +96,12 @@ funeral_outputs/
 python@3.12/
 vega_output/
 
+
+# build output, never committed
+.vercel/
+.output/
+.nitro/
+dist/
+
+# Mac
+.DS_Store

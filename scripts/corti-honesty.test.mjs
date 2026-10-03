@@ -8,7 +8,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { chromium } from "playwright";
 
-const SRC = "/workspace/src";
+const SRC = new URL("../src", import.meta.url).pathname;
 
 function walk(dir, acc = []) {
   for (const name of readdirSync(dir)) {
@@ -76,7 +76,7 @@ describe("live preview", () => {
       page.on("console", (m) => {
         if (m.type() === "error") errors.push(m.text());
       });
-      const res = await page.goto("http://127.0.0.1:8080/", {
+      const res = await page.goto("http://127.0.0.1:9243/", {
         waitUntil: "networkidle",
         timeout: 45000,
       });
@@ -114,7 +114,7 @@ describe("live preview", () => {
 
       const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
       mobile.on("pageerror", (e) => errors.push("mobile:" + String(e)));
-      await mobile.goto("http://127.0.0.1:8080/", { waitUntil: "networkidle", timeout: 45000 });
+      await mobile.goto("http://127.0.0.1:9243/", { waitUntil: "networkidle", timeout: 45000 });
       const overflow = await mobile.evaluate(
         () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
       );

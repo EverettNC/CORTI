@@ -7,7 +7,7 @@ const browser = await chromium.launch({
 const errors = [];
 
 async function shot(page, name) {
-  await page.screenshot({ path: `/workspace/screenshots/${name}.png`, fullPage: false });
+  await page.screenshot({ path: new URL(`../screenshots/${name}.png`, import.meta.url).pathname, fullPage: false });
 }
 
 try {
@@ -16,7 +16,7 @@ try {
   page.on("console", (m) => {
     if (m.type() === "error") errors.push(m.text());
   });
-  await page.goto("http://127.0.0.1:8080/", { waitUntil: "networkidle", timeout: 45000 });
+  await page.goto("http://127.0.0.1:9243/", { waitUntil: "networkidle", timeout: 45000 });
   await page.waitForTimeout(400);
 
   await page.getByTestId("open-cochlea").click();
@@ -52,16 +52,16 @@ try {
   mobile.on("console", (m) => {
     if (m.type() === "error") errors.push("mobile:" + m.text());
   });
-  await mobile.goto("http://127.0.0.1:8080/", { waitUntil: "networkidle", timeout: 45000 });
+  await mobile.goto("http://127.0.0.1:9243/", { waitUntil: "networkidle", timeout: 45000 });
   await mobile.waitForTimeout(400);
   const overflow = await mobile.evaluate(() => ({
     scrollW: document.documentElement.scrollWidth,
     clientW: document.documentElement.clientWidth,
   }));
-  await mobile.screenshot({ path: "/workspace/screenshots/corti-mobile.png" });
+  await mobile.screenshot({ path: new URL("../screenshots/corti-mobile.png", import.meta.url).pathname });
   await mobile.getByTestId("open-cochlea").click();
   await mobile.waitForTimeout(600);
-  await mobile.screenshot({ path: "/workspace/screenshots/corti-mobile-open.png" });
+  await mobile.screenshot({ path: new URL("../screenshots/corti-mobile-open.png", import.meta.url).pathname });
   console.log(JSON.stringify({ note1, note2, note3, overflow, errors }, null, 2));
 } finally {
   await browser.close();
