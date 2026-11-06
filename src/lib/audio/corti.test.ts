@@ -265,6 +265,21 @@ describe("vocalization tracker", () => {
     assert.equal(ev.f0, null);
     assert.ok(ev.tape.every((f) => f.f0 === null));
   });
+  it("attack is the time to the peak, not one screen frame — same on 60 Hz and 120 Hz", () => {
+    for (const fps of [60, 120]) {
+      const frame = 1000 / fps;
+      const t = new VocalTracker();
+      let ev = null as ReturnType<VocalTracker["step"]>;
+      let i = 0;
+      for (; i * frame < 200; i++) {
+        ev = t.step(i * frame, 0.02 + 0.18 * ((i * frame) / 200), 0.04, 140, 500, 1400) ?? ev;
+      }
+      for (const end = i + 15; i < end; i++) ev = t.step(i * frame, 0.2, 0.04, 140, 500, 1400) ?? ev;
+      ev = t.step(i * frame, 0.002, 0.04, null, 500, 1400) ?? ev;
+      assert.ok(ev, `event should close at ${fps} Hz`);
+      assert.ok(Math.abs(ev.attackMs - 200) <= frame, `${fps} Hz attack=${ev.attackMs}`);
+    }
+  });
   it("long unvoiced high ZCR is a hiss", () => {
     const t = new VocalTracker();
     let ev = null as ReturnType<VocalTracker["step"]>;
@@ -432,23 +447,31 @@ describe("alphavox router — client only", () => {
     assert.equal(key, "unknown");
   });
 
-  it("distress needs a lock plus sharp attack plus strain", () => {
-    const key = analyzeGruntPhysics({
-      id: 2,
-      kind: "grunt",
-      startedAt: 0,
-      durationMs: 200,
-      peakRms: 0.08,
-      attackMs: 8,
-      decayMs: 192,
-      f0: 280,
-      f1: 600,
-      f2: 1600,
-      zcr: 0.18,
-      voiced: true,
-      tape: [],
-    });
-    assert.equal(key, "grunt_distress");
+  it("distress comes from the real ear: a 280 Hz porous groan at full strength from its first frame", () => {
+    const frame = 1000 / 60;
+    const t = new VocalTracker();
+    let ev = null as ReturnType<VocalTracker["step"]>;
+    for (let i = 0; i < 30; i++) ev = t.step(i * frame, 0.2, 0.18, 280, 600, 1600) ?? ev;
+    ev = t.step(30 * frame, 0.002, 0.18, null, 600, 1600) ?? ev;
+    assert.ok(ev, "event should close");
+    assert.equal(ev.kind, "groan");
+    assert.ok(ev.attackMs < 15, `attack=${ev.attackMs}`);
+    assert.equal(analyzeGruntPhysics(ev), "grunt_distress");
+  });
+
+  it("acknowledge comes from the real ear: a 150 Hz smooth grunt that rises over 50 ms", () => {
+    const frame = 1000 / 60;
+    const rise = [0.05, 0.1, 0.15, 0.2];
+    const t = new VocalTracker();
+    let ev = null as ReturnType<VocalTracker["step"]>;
+    for (let i = 0; i < 15; i++) {
+      ev = t.step(i * frame, rise[i] ?? 0.2, 0.05, 150, 500, 1400) ?? ev;
+    }
+    ev = t.step(15 * frame, 0.002, 0.05, null, 500, 1400) ?? ev;
+    assert.ok(ev, "event should close");
+    assert.equal(ev.kind, "grunt");
+    assert.ok(ev.attackMs >= 15, `attack=${ev.attackMs}`);
+    assert.equal(analyzeGruntPhysics(ev), "grunt_acknowledge");
   });
 
   it("rhythmic cadence is vocal_stimming, not HOLD_SPACE", () => {
@@ -471,4 +494,3 @@ describe("alphavox router — client only", () => {
     assert.equal(routeForAlphaVox(ring), "vocal_stimming");
   });
 });
-
