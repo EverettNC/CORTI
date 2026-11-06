@@ -61,8 +61,7 @@ function classify(
 type Active = {
   startedAt: number;
   peakRms: number;
-  riseAt: number;
-  attackMs: number;
+  peakAt: number;
   f0s: number[];
   zcrs: number[];
   f1: number;
@@ -96,8 +95,7 @@ export class VocalTracker {
         this.active = {
           startedAt: now,
           peakRms: rms,
-          riseAt: now,
-          attackMs: 0,
+          peakAt: now,
           f0s: f0 ? [f0] : [],
           zcrs: [zcr],
           f1,
@@ -109,9 +107,9 @@ export class VocalTracker {
     }
 
     const a = this.active;
-    if (rms > a.peakRms) a.peakRms = rms;
-    if (a.attackMs === 0 && a.peakRms > 0 && rms >= a.peakRms * 0.85) {
-      a.attackMs = Math.max(4, now - a.riseAt);
+    if (rms > a.peakRms) {
+      a.peakRms = rms;
+      a.peakAt = now;
     }
     if (f0) a.f0s.push(f0);
     a.zcrs.push(zcr);
@@ -140,8 +138,8 @@ export class VocalTracker {
       startedAt: a.startedAt,
       durationMs,
       peakRms: a.peakRms,
-      attackMs: a.attackMs || Math.min(18, durationMs * 0.2),
-      decayMs: Math.max(0, durationMs - (a.attackMs || 0)),
+      attackMs: a.peakAt - a.startedAt,
+      decayMs: Math.max(0, durationMs - (a.peakAt - a.startedAt)),
       f0,
       f1: a.f1,
       f2: a.f2,
