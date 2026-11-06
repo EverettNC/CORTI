@@ -201,6 +201,14 @@ export function HearingProvider({ children }: { children: ReactNode }) {
       buf.push(frame.rms);
       if (buf.length > 120) buf.shift();
     }
+    if (closed) {
+      const ring = [...tracker.current.events];
+      setEvents(ring);
+      const key = routeForAlphaVox(ring);
+      setLastAcousticKey(key);
+      postAcousticKey(key);
+      setLastVs(compareToSeat(closed, seatRef.current));
+    }
     listeners.current.forEach((fn) => fn(frame));
     const now = performance.now();
     if (now - lastHouse.current > 8000) {
@@ -221,14 +229,6 @@ export function HearingProvider({ children }: { children: ReactNode }) {
       if (restBuf.current.length > 8) {
         const s = [...restBuf.current].sort((a, b) => a - b);
         setRestRms(s[Math.floor(s.length / 2)] ?? 0);
-      }
-      if (closed) {
-        const ring = [...tracker.current.events];
-        setEvents(ring);
-        const key = routeForAlphaVox(ring);
-        setLastAcousticKey(key);
-        postAcousticKey(key);
-        setLastVs(compareToSeat(closed, seatRef.current));
       }
     }
     raf.current = requestAnimationFrame(loop);
