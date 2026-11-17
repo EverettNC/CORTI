@@ -13,7 +13,7 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test src/lib/audio/corti.test.ts src/lib/audio/house-record.test.ts",
+    "test": "node --experimental-strip-types --test src/lib/audio/corti.test.ts src/lib/audio/house-record.test.ts src/lib/audio/sound-live.test.ts",
     "test:honesty": "node --test scripts/corti-honesty.test.mjs",
     "qa": "node scripts/corti-qa.mjs",
     "lint": "eslint .",

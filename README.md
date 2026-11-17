@@ -141,7 +141,7 @@ or thresholds.
                     │   tape + card only  │
                     └──────────┬──────────┘
                                │  VocalEvent { card, tape[] }
-                               │  (this wire is not live yet)
+                               │  (posted on close: sound-live.ts)
           ┌────────────────────┼────────────────────┐
           ▼                    ▼                    ▼
    tape_contour.py      prosody.py            (no SoundDetector
