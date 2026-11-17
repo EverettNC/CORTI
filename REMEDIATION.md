@@ -35,9 +35,9 @@ a live waveform.
 1. Closed events can miss the React ring if they land between the 50 ms UI ticks. The tracker has them; the seat button count can lag one utterance.
 2. Seat is the last **eight** events only. Voiced events that aged out do not count.
 3. Kind bin `F0 < 230` labels ordinary adult speech as `grunt`.
-4. Footer copy says it feeds CHRISTMAN_EAR_CANAL. No emit exists.
+4. ~~Footer copy says it feeds CHRISTMAN_EAR_CANAL. No emit exists.~~ Closed: `sound-live.ts` posts every closed card; the footer says so.
 5. LPC formant cache is module-level and updates every third loud frame.
-6. Nothing posts a `VocalEvent` to `tape_contour`, `prosody`, or Fusion.
+6. ~~Nothing posts a `VocalEvent` to `tape_contour`, `prosody`, or Fusion.~~ Closed: on close, `sound-live.ts` posts the card and its tape to the Christman-Sound receiver (`corti_receiver`, 127.0.0.1:5486), which seats it under `hearing.py`. A being starts that receiver; with none running, the post fails and the console says so.
 
 Corti is operational as an ear. It is not operational as a family
 nervous system. That is the rest of this sheet.
@@ -270,7 +270,7 @@ operational as a nervous system. Not a wish list. The missing wires.
 10. Mode-string dialects will drop a live mode even if someone stuffs
     it into `live_state["response_mode"]`.
 11. Recognition VAD and `resonance_listener` are extra microphones.
-12. Footer claims a canal feed that does not exist.
+12. ~~Footer claims a canal feed that does not exist.~~ Closed: the feed is `sound-live.ts`, and `ear.ts` is the same loop for a being to start without Corti's screen.
 
 **What is not required to keep Corti itself operational:**
 Fusion, ToneScore, nonverbal maps, TTS, presence, grounding. The ear

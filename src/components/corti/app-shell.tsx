@@ -146,8 +146,9 @@ export function AppShell() {
           Corti is the silicon cochlea of The Christman AI Project. Sister to
           OpenSmell. christman_dsp.c runs here — RMS, ZCR, YIN, LPC. It will
           not name a pitch it did not lock, and it will not wear a percentage
-          it did not measure. The canal feed is not wired. The tape stays
-          here until it is.
+          it did not measure. Each closed card and its tape is posted to
+          Christman-Sound on this machine. If nothing is listening there,
+          the console says so.
         </footer>
       </main>
 

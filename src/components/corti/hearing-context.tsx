@@ -36,6 +36,7 @@ import {
   type AcousticKey,
 } from "@/lib/audio/alphavox-router";
 import { postAcousticKey } from "@/lib/audio/alphavox-live";
+import { postSoundCard } from "@/lib/audio/sound-live";
 import { earFromFrame, postCortiHouse } from "@/lib/audio/house-record";
 
 export type MicState = "off" | "pending" | "on" | "denied";
@@ -207,6 +208,7 @@ export function HearingProvider({ children }: { children: ReactNode }) {
       const key = routeForAlphaVox(ring);
       setLastAcousticKey(key);
       postAcousticKey(key);
+      void postSoundCard(closed);
       setLastVs(compareToSeat(closed, seatRef.current));
     }
     listeners.current.forEach((fn) => fn(frame));
