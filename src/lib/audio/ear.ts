@@ -68,6 +68,7 @@ export class Ear {
   private engine: HearingEngine | null = null;
   private readonly tracker = new VocalTracker();
   private raf = 0;
+  private readonly inFlight = new Set<Promise<void>>();
   private readonly soundUrl: string;
   private readonly opts: EarOptions;
   /** The last acoustic key the router produced. "unknown" until one is. */
@@ -105,11 +106,18 @@ export class Ear {
     this.raf = requestAnimationFrame(this.loop);
   }
 
-  stop(): void {
+  /**
+   * Closes the microphone. Resolves once every card already closed has been
+   * answered by Christman-Sound, so a caller can count on onCard having run.
+   * A sound still open when the microphone closes is not a card: it never
+   * reached its offset, so nothing is posted for it.
+   */
+  async stop(): Promise<void> {
     cancelAnimationFrame(this.raf);
     this.raf = 0;
     this.engine?.dispose();
     this.engine = null;
+    await Promise.all([...this.inFlight]);
   }
 
   private readonly loop = (): void => {
@@ -124,8 +132,10 @@ export class Ear {
   private deliver(card: VocalEvent): void {
     this.lastKey = routeForAlphaVox(this.cards);
     if (this.opts.acousticUrl) postAcousticKey(this.lastKey, this.opts.acousticUrl);
-    void postSoundCard(card, this.soundUrl).then((delivered) => {
+    const sent: Promise<void> = postSoundCard(card, this.soundUrl).then((delivered) => {
+      this.inFlight.delete(sent);
       this.opts.onCard?.(card, delivered);
     });
+    this.inFlight.add(sent);
   }
 }
