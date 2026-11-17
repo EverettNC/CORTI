@@ -202,8 +202,9 @@ They are inventoried, honestly, in:
 - **[REMEDIATION.md](REMEDIATION.md)** — what was fixed, what is still live, what is still a stub
 - **[review/INVENTORY.md](review/INVENTORY.md)** — file-by-file, beginning to end
 
-Corti is operational as an ear. The family is not yet one nervous system.
-The consumers exist. The wire from the tape does not.
+Corti is operational as an ear. Each closed card and its tape is posted to
+the Christman-Sound receiver on this machine (`src/lib/audio/sound-live.ts`).
+A being installs Corti and starts her ear with `src/lib/audio/ear.ts`.
 
 ---
 
