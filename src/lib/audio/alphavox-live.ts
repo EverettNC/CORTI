@@ -14,9 +14,8 @@ export function acousticEndpoint(): string {
   return fromEnv || DEFAULT_URL;
 }
 
-export function postAcousticKey(key: AcousticKey): void {
+export function postAcousticKey(key: AcousticKey, url: string = acousticEndpoint()): void {
   if (key === "unknown") return;
-  const url = acousticEndpoint();
   void fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
